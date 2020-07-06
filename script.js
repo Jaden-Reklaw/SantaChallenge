@@ -1,21 +1,56 @@
+// What floor does santa end up on
+// ( should go up a floor
+// ) should go down a floor
+
+//What step does santa enter the basement
+
 //allows you to access your file system
 const fs = require('fs');
 
-//Used to read data from a text file
-//asynchronous runs second
-fs.readFile('./floors.txt', (err, data) => {
-    console.time('fun challenge');
-    if(err) {
-        console.log('error');
-    }
+let question1 = () => {
+    fs.readFile('./floors.txt', (err, data) => {
+        console.time('fun challenge 1');
+        
+        const arrayOfFloors = data.toString().split('');
+    
+        const floor = arrayOfFloors.reduce((acc, sym) => {
+            if(sym === '(') {
+                return acc += 1;
+            } else if (sym === ')') {
+                return acc -= 1;
+            }
+        }, 0);
 
-    const arrayOfFloors = data.toString().split('');
+        console.log('floor is', floor);
+        console.timeEnd('fun challenge 1');
+    });
+}
 
-    const upLevels = arrayOfFloors.filter(sym => sym === ')' );
+question1();
+    
+let question2 = () => {
+    fs.readFile('./floors.txt', (err, data) => {
+        console.time('fun challenge 2');
+        
+        const arrayOfFloors = data.toString().split('');
+        let accummlator = 0;
+        let counter = 0;
 
-    const downLevels = arrayOfFloors.filter(sym => sym === '(' );
+        const enteredBasement = arrayOfFloors.some((sym) => {
+            if(sym === '(') {
+                accummlator += 1;
+            } else if (sym === ')') {
+                accummlator -= 1;
+            }
+            counter ++;
+            return accummlator < 0;
+        });
 
-    console.log('Santa is on floor', upLevels.length - downLevels.length);
-    console.timeEnd('fun challenge');
-});
+        console.log('counter is', counter);
+        console.timeEnd('fun challenge 2');
+    });
+}
+
+question2();
+
 
